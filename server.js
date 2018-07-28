@@ -55,7 +55,7 @@ app.post("/posts", function(req, res) {
     handleError(res, "Invalid user input", "Must provide a title.", 400);
   }
 
-  db.collection(CONTACTS_COLLECTION).insertOne(newPost, function(err, doc) {
+  db.collection(POSTS_COLLECTION).insertOne(newPost, function(err, doc) {
     if (err) {
       handleError(res, err.message, "Failed to create new post.");
     } else {

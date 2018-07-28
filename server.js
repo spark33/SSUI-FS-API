@@ -45,6 +45,13 @@ function handleError(res, reason, message, code) {
  */
 
 app.get("/posts", function(req, res) {
+  db.collection(POSTS_COLLECTION).find({}).toArray(function(err, docs) {
+    if (err) {
+      handleError(res, err.message, "Failed to get posts.");
+    } else {
+      res.status(200).json(docs);
+    }
+  });
 });
 
 app.post("/posts", function(req, res) {

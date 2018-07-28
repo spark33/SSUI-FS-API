@@ -4,7 +4,7 @@ var bodyParser = require("body-parser");
 var mongodb = require("mongodb");
 var ObjectID = mongodb.ObjectID;
 
-var POSTS_COLLECTION = "posts";
+var PLAYLISTS_COLLECTION = "playlists";
 
 var app = express();
 app.use(express.static(__dirname + "/public"));
@@ -31,7 +31,7 @@ mongodb.MongoClient.connect(process.env.MONGO_URI, function (err, database) {
   });
 });
 
-// POSTS API ROUTES BELOW
+// PLAYLISTS API ROUTES BELOW
 
 // Generic error handler used by all endpoints.
 function handleError(res, reason, message, code) {
@@ -39,22 +39,22 @@ function handleError(res, reason, message, code) {
   res.status(code || 500).json({"error": message});
 }
 
-/*  "/posts"
- *    GET: finds all posts
- *    POST: adds all posts in posts param to MLab
+/*  "/playlists"
+ *    GET: finds all playlists
+ *    POST: adds all playlists in playlists param to MLab
  */
 
-app.get("/posts", function(req, res) {
-  db.collection(POSTS_COLLECTION).find({}).toArray(function(err, docs) {
+app.get("/playlists", function(req, res) {
+  db.collection(PLAYLISTS_COLLECTION).find({}).toArray(function(err, docs) {
     if (err) {
-      handleError(res, err.message, "Failed to get posts.");
+      handleError(res, err.message, "Failed to get playlists.");
     } else {
       res.status(200).json(docs);
     }
   });
 });
 
-app.post("/posts", function(req, res) {
+app.post("/playlists", function(req, res) {
   var newPost = req.body;
   newPost.createDate = new Date();
 
@@ -62,7 +62,7 @@ app.post("/posts", function(req, res) {
     handleError(res, "Invalid user input", "Must provide a title.", 400);
   }
 
-  db.collection(POSTS_COLLECTION).insertOne(newPost, function(err, doc) {
+  db.collection(PLAYLISTS_COLLECTION).insertOne(newPost, function(err, doc) {
     if (err) {
       handleError(res, err.message, "Failed to create new post.");
     } else {

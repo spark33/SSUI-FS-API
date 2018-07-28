@@ -1,5 +1,5 @@
 {
-  "name": "Uncommon Space Playlist API",
+  "name": "UncommonSpacePlaylistAPI",
   "version": "1.0.0",
   "description": "API to handle curation of playlist content",
   "main": "server.js",

@@ -24,9 +24,7 @@ exports.getAllPlaylists = function(req, res, next) {
 }
 
 exports.createPlaylist = function(req, res, next) {
-
   var playlist = new Playlist(req.body);
-
   playlist.save(function (err) {
     if (err) {
       next(err);

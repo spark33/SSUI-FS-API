@@ -1,8 +1,9 @@
-var express = require("express");
-var path = require("path");
-var bodyParser = require("body-parser");
-var mongodb = require("mongodb");
-var ObjectID = mongodb.ObjectID;
+var express = require("express"),
+    path = require("path"),
+    bodyParser = require("body-parser"),
+    mongodb = require("mongodb"),
+    router = express.Router(),
+    ObjectID = mongodb.ObjectID;
 
 var PLAYLISTS_COLLECTION = "playlists";
 
@@ -44,7 +45,7 @@ function handleError(res, reason, message, code) {
  *    POST: adds all playlists in playlists param to MLab
  */
 
-app.get("/playlists", function(req, res) {
+var getAllPlaylists = function(req, res) {
   db.collection(PLAYLISTS_COLLECTION).find({}).toArray(function(err, docs) {
     if (err) {
       handleError(res, err.message, "Failed to get playlists.");
@@ -52,9 +53,9 @@ app.get("/playlists", function(req, res) {
       res.status(200).json(docs);
     }
   });
-});
+}
 
-app.post("/playlists", function(req, res) {
+var createPlaylist = function(req, res) {
   var newPost = req.body;
   newPost.createDate = new Date();
 
@@ -69,4 +70,8 @@ app.post("/playlists", function(req, res) {
       res.status(201).json(doc.ops[0]);
     }
   });
-});
+}
+
+router.route('/playlists')
+  .get(getAllPlaylists)
+  .post(createPlaylist);

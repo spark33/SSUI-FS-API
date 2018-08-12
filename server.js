@@ -17,10 +17,6 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(bodyParser.json());
 
-mongoose.connect(process.env.MONGO_URI);
-app.listen(5000);
-module.exports = app;
-
 var PlaylistSchema = new Schema({
   title: { type: String }
 });
@@ -61,3 +57,10 @@ router.route('/playlists')
   .post(createPlaylist);
 
 app.use('/', router);
+
+mongoose.connect(process.env.MONGO_URI);
+// Initialize the app.
+var server = app.listen(process.env.PORT || 8080, function () {
+  var port = server.address().port;
+  console.log("App now running on port", port);
+});

@@ -2,72 +2,56 @@ var express = require("express"),
     path = require("path"),
     bodyParser = require("body-parser"),
     mongodb = require("mongodb"),
-    router = express.Router(),
-    ObjectID = mongodb.ObjectID;
+    router = express.Router();
 
-var PLAYLISTS_COLLECTION = "playlists";
+var mongoose = require('mongoose'),
+    Schema = mongoose.Schema;
 
 var app = express();
+
 app.use(express.static(__dirname + "/public"));
+
+//rest API requirements
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use(bodyParser.json());
 
-// Create a database variable outside of the database connection callback to reuse the connection pool in your app.
-var db;
+mongoose.connect(process.env.MONGO_URI);
+app.listen(5000);
+module.exports = app;
 
-// Connect to the database before starting the application server.
-mongodb.MongoClient.connect(process.env.MONGO_URI, function (err, database) {
-  if (err) {
-    console.log(err);
-    process.exit(1);
-  }
-
-  // Save database object from the callback for reuse.
-  db = database;
-  console.log("Database connection ready");
-
-  // Initialize the app.
-  var server = app.listen(process.env.PORT || 8080, function () {
-    var port = server.address().port;
-    console.log("App now running on port", port);
-  });
+var PlaylistSchema = new Schema({
+  title: { type: String }
 });
 
-// PLAYLISTS API ROUTES BELOW
-
-// Generic error handler used by all endpoints.
-function handleError(res, reason, message, code) {
-  console.log("ERROR: " + reason);
-  res.status(code || 500).json({"error": message});
-}
+mongoose.model('Playlist', PlaylistSchema);
+var Playlist = require('mongoose').model('Playlist');
 
 /*  "/playlists"
  *    GET: finds all playlists
  *    POST: adds all playlists in playlists param to MLab
  */
 
-var getAllPlaylists = function(req, res) {
-  db.collection(PLAYLISTS_COLLECTION).find({}).toArray(function(err, docs) {
+var getAllPlaylists = function(req, res, next) {
+  Playlist.find(function (err, playlists) {
     if (err) {
-      handleError(res, err.message, "Failed to get playlists.");
+      next(err);
     } else {
-      res.status(200).json(docs);
+      res.json(playlists);
     }
   });
 }
 
-var createPlaylist = function(req, res) {
-  var newPost = req.body;
-  newPost.createDate = new Date();
+var createPlaylist = function(req, res, next) {
 
-  if (!(req.body.title)) {
-    handleError(res, "Invalid user input", "Must provide a title.", 400);
-  }
+  var playlist = new Playlist(req.body);
 
-  db.collection(PLAYLISTS_COLLECTION).insertOne(newPost, function(err, doc) {
+  playlist.save(function (err) {
     if (err) {
-      handleError(res, err.message, "Failed to create new post.");
+      next(err);
     } else {
-      res.status(201).json(doc.ops[0]);
+      res.json(playlist);
     }
   });
 }
@@ -75,3 +59,5 @@ var createPlaylist = function(req, res) {
 router.route('/playlists')
   .get(getAllPlaylists)
   .post(createPlaylist);
+
+app.use('/', router);

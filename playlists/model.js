@@ -37,9 +37,17 @@ exports.createPlaylist = function(req, res, next) {
 exports.addPostSection = function(req, res, next) {
 
   Playlist.findById(req.body.playlistId, function(err, playlist) {
+
+    if(!req.body.playlistId) {
+        let err = new Error('Playlist ID not defined.');
+        err.statusCode = 400;
+        next(err);
+        return;
+      }
     
     if(err) {
       next(err);
+      return;
     } else {
       if(!req.body.order) {
         let err = new Error('Order not defined.');
@@ -63,8 +71,8 @@ exports.addPostSection = function(req, res, next) {
             return;
           }
         }
-        ps.push({ order: order });
       }
+      ps.push({ order: order });
 
       playlist.save(function(err) {
         if(err) {

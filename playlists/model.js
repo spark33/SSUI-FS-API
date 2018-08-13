@@ -28,15 +28,37 @@ exports.createPlaylist = function(req, res, next) {
   });
 }
 
+// playlist_id
+// order
 exports.addSection = function(req, res, next) {
-  var playlist = findPlaylist(req.body.playlist_id);
-  if(playlist) {
-    var description = req.body.description;
-    var order = req.body.order;
-    if(order == playlist.post_sections.length) {
-      playlist.post_sections.push({})
+
+  Playlist.findById(req.body.playlist_id, function(err, playlist) {
+    
+    if(err) {
+      console.log(err);
+    } else {
+      var order = req.body.order;
+      var ps = playlist.post_sections;
+      if(order == ps.length) {
+        ps.push({ order: order });
+      } else if(order < ps.length) {
+        for(var i = 0; i < ps.length; i++) {
+          if(ps[i].order >= order) {
+            ps[i].order += 1;
+          }
+        }
+        ps.push({ order: order });
+      }
+      playlist.save(function(err) {
+        if(err) {
+          console.log(err);
+        } else { 
+          res.json(playlist);
+        }
+      });
     }
-  }
+
+  })
 }
 
 exports.updatePostInSection = function(req, res, next) {

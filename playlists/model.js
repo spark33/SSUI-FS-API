@@ -1,11 +1,5 @@
-var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
-
-var PlaylistSchema = new Schema({
-  title: { type: String }
-});
-
-mongoose.model('Playlist', PlaylistSchema);
+var mongoose = require('mongoose');
+mongoose.model('Playlist', require('./schema.js'));
 var Playlist = require('mongoose').model('Playlist');
 
 /*  "/playlists"

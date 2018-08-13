@@ -1,11 +1,6 @@
-var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+var mongoose = require('mongoose');
 
-var PostSchema = new Schema({
-  title: { type: String }
-});
-
-mongoose.model('Post', PostSchema);
+mongoose.model('Post', require('./schema.js'));
 var Post = require('mongoose').model('Post');
 
 /*  "/posts"

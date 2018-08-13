@@ -6,6 +6,6 @@ router.route('/')
   .get(playlists.getAllPlaylists)
   .post(playlists.createPlaylist);
 
-router.post('/add-section', playlists.addSection);
+router.post('/add-section', playlists.addPostSection);
 
 module.exports = router;

@@ -34,7 +34,7 @@ exports.createPlaylist = function(req, res, next) {
 
 // playlistId
 // order
-exports.addSection = function(req, res, next) {
+exports.addPostSection = function(req, res, next) {
 
   Playlist.findById(req.body.playlistId, function(err, playlist) {
     

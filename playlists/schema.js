@@ -1,6 +1,37 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
+var PostSectionSchema = new Schema({
+  description: { 
+    type: String,
+    default: "New Post Section"
+  },
+  order: { 
+    type: Number, 
+    default: 0, 
+    min: 0 
+  },
+  posts: [{
+    // denormalized from Post schema
+    type: { 
+      type: String 
+    }, // todo: add enum
+    image: { 
+      type: String 
+    },
+    description: { 
+      type: String 
+    },
+    source: { 
+      type: String 
+    }, // todo: add enum
+    last_updated: { 
+      type: Date, 
+      default: Date.now 
+    }
+  }]
+});
+
 var PlaylistSchema = new Schema({
   title: { 
     type: String, 
@@ -33,33 +64,7 @@ var PlaylistSchema = new Schema({
     set: v => Math.round(v),
   },
   post_sections: {
-    description: { 
-      type: String 
-    },
-    order: { 
-      type: Number, 
-      default: 0, 
-      min: 0 
-    },
-    posts: [{ // denormalized from Post schema
-      post_id: Schema.Types.ObjectId,
-      type: { 
-        type: String 
-      }, // todo: add enum
-      image: { 
-        type: String 
-      },
-      description: { 
-        type: String 
-      },
-      source: { 
-        type: String 
-      }, // todo: add enum
-      last_updated: { 
-        type: Date, 
-        default: Date.now 
-      },
-    }]
+    type: [PostSectionSchema]
   },
   last_updated: { 
     type: Date, 

@@ -27,3 +27,22 @@ exports.createPlaylist = function(req, res, next) {
     }
   });
 }
+
+exports.addSection = function(req, res, next) {
+  var playlist = findPlaylist(req.body.playlist_id);
+  if(playlist) {
+    var description = req.body.description;
+    var order = req.body.order;
+    if(order == playlist.post_sections.length) {
+      playlist.post_sections.push({})
+    }
+  }
+}
+
+exports.updatePostInSection = function(req, res, next) {
+  var playlist = findPlaylist(req.body.playlist_id);
+  if(playlist) {
+    var post_id = req.body.post_id;
+    var order = req.body.order;
+  }
+}

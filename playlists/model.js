@@ -77,10 +77,3 @@ exports.addSection = function(req, res, next) {
 
   })
 }
-
-// playlistId
-// order
-// postId
-exports.updatePostInSection = function(req, res, next) {
-  
-}

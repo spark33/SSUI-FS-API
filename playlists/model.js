@@ -35,23 +35,36 @@ exports.addSection = function(req, res, next) {
   Playlist.findById(req.body.playlist_id, function(err, playlist) {
     
     if(err) {
-      console.log(err);
+      next(err);
     } else {
+      if(!req.body.order) {
+        let err = new Error('Order not defined.');
+        err.statusCode = 400;
+        next(err);
+        return;
+      }
       var order = req.body.order;
       var ps = playlist.post_sections;
-      if(order == ps.length) {
-        ps.push({ order: order });
-      } else if(order < ps.length) {
+      if(order > ps.length) {
+        let err = new Error('Order is too large.');
+        err.statusCode = 400;
+        next(err);
+        return;
+      } else if(order != ps.length) {
         for(var i = 0; i < ps.length; i++) {
-          if(ps[i].order >= order) {
-            ps[i].order += 1;
+          if(ps[i].order == order) {
+            let err = new Error('Post section with the order already exists.');
+            err.statusCode = 400;
+            next(err);
+            return;
           }
         }
         ps.push({ order: order });
       }
+
       playlist.save(function(err) {
         if(err) {
-          console.log(err);
+          next(err);
         } else { 
           res.json(playlist);
         }

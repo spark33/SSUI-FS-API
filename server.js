@@ -4,7 +4,7 @@ var express = require("express"),
     mongodb = require("mongodb"),
     router = require("./router.js"),
     mongoose = require('mongoose');
-    
+
 var app = express();
 
 app.use(express.static(__dirname + "/public"));
@@ -16,6 +16,12 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 app.use('/', router);
+
+app.use(function(err, req, res, next) {
+  console.error(err.message);
+  if (!err.statusCode) err.statusCode = 500; // Sets a generic server error status code if none is part of the err
+  res.status(err.statusCode).send(err.message); // Send err data
+});
 
 mongoose.connect(process.env.MONGO_URI);
 // Initialize the app.

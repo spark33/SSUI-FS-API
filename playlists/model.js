@@ -28,11 +28,15 @@ exports.createPlaylist = function(req, res, next) {
   });
 }
 
-// playlist_id
+/*  "/playlists/add-section"
+ *    POST: adds all playlists in playlists param to MLab
+ */
+
+// playlistId
 // order
 exports.addSection = function(req, res, next) {
 
-  Playlist.findById(req.body.playlist_id, function(err, playlist) {
+  Playlist.findById(req.body.playlistId, function(err, playlist) {
     
     if(err) {
       next(err);
@@ -44,7 +48,7 @@ exports.addSection = function(req, res, next) {
         return;
       }
       var order = req.body.order;
-      var ps = playlist.post_sections;
+      var ps = playlist.postSections;
       if(order > ps.length) {
         let err = new Error('Order is too large.');
         err.statusCode = 400;
@@ -74,10 +78,9 @@ exports.addSection = function(req, res, next) {
   })
 }
 
+// playlistId
+// order
+// postId
 exports.updatePostInSection = function(req, res, next) {
-  var playlist = findPlaylist(req.body.playlist_id);
-  if(playlist) {
-    var post_id = req.body.post_id;
-    var order = req.body.order;
-  }
+  
 }

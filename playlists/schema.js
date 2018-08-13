@@ -25,7 +25,7 @@ var PostSectionSchema = new Schema({
     source: { 
       type: String 
     }, // todo: add enum
-    last_updated: { 
+    lastUpdated: { 
       type: Date, 
       default: Date.now 
     }
@@ -38,16 +38,16 @@ var PlaylistSchema = new Schema({
     required: true, 
     unique: true 
   },
-  title_text: { 
+  titleText: { 
     type: String
   },
-  banner_image: {  // image path
+  bannerImage: {  // image path
     type: String 
   },
   description: { 
     type: String 
   },
-  post_count: { 
+  postCount: { 
     type: Number, 
     default: 0, 
     min: 0,
@@ -55,7 +55,7 @@ var PlaylistSchema = new Schema({
     get: v => Math.round(v),
     set: v => Math.round(v),
   },
-  time_estimate: { 
+  timeEstimate: { 
     type: Number, 
     default: 0, 
     min: 0,
@@ -63,10 +63,10 @@ var PlaylistSchema = new Schema({
     get: v => Math.round(v),
     set: v => Math.round(v),
   },
-  post_sections: {
+  postSections: {
     type: [PostSectionSchema]
   },
-  last_updated: { 
+  lastUpdated: { 
     type: Date, 
     default: Date.now 
   },

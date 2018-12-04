@@ -1,11 +1,11 @@
 {
-  "name": "UncommonSpacePlaylistAPI",
+  "name": "fsAPI",
   "version": "1.0.0",
-  "description": "API to handle curation of playlist content",
+  "description": "SSUI Final Project API",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "nodemon server.js"
   },
   "dependencies": {
     "body-parser": "^1.13.3",
@@ -13,6 +13,7 @@
     "mongodb": "^2.1.6"
   },
   "devDependencies": {
-    "mongoose": "^5.2.7"
+    "mongoose": "^5.2.7",
+    "nodemon": "^1.18.7"
   }
 }

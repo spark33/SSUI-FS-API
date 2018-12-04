@@ -1,9 +1,9 @@
 var express = require("express"),
 		router = express.Router(),
-		posts = require('./model.js');
+		outfits = require('./model.js');
 
 router.route('/')
-  .get(posts.getAllPosts)
-  .post(posts.createPost);
+  .get(outfits.getAllOutfits)
+  .post(outfits.createOutfit);
 
 module.exports = router;

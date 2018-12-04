@@ -3,6 +3,7 @@ var express = require("express"),
     bodyParser = require("body-parser"),
     mongodb = require("mongodb"),
     router = require("./router.js"),
+    cors = require('cors');
     mongoose = require('mongoose');
 
 var app = express();
@@ -14,6 +15,7 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(bodyParser.json());
+app.use(cors());
 
 app.use('/', router);
 

@@ -12,7 +12,8 @@ exports.getAllOutfits = function(req, res, next) {
     if (err) {
       next(err);
     } else {
-      let tagList = req.body.tagList;
+      let tagList = req.query.tags.split(',');
+      console.log(tagList)
       if(!tagList || tagList.length === 0) {
         res.json(outfits);
         return;

@@ -6,4 +6,7 @@ router.route('/')
   .get(outfits.getAllOutfits)
   .post(outfits.createOutfit);
 
+router.route('/:id')
+	.get(outfits.getOutfit);
+
 module.exports = router;

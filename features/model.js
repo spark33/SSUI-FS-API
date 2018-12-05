@@ -14,6 +14,8 @@ exports.createFeature = function(req, res, next) {
       next(err);
     } else {
       var feature = new Feature(req.body);
+      feature.tags = req.body.tags.split(',');
+      console.log(feature);
       outfit.features.push(feature);
       outfit.save();
       res.redirect(req.headers.origin + '/outfits/' + outfit._id);

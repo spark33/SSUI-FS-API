@@ -3,21 +3,21 @@ mongoose.model('Outfit', require('./schema.js'));
 var Outfit = require('mongoose').model('Outfit');
 
 /*  "/outfits"
- *    GET: finds all outfits
+ *    GET: finds all outfits with queried tags
  *    POST: adds all outfits in outfits param to MLab
  */
 
 exports.getAllOutfits = function(req, res, next) {
+  console.log(req.query);
   Outfit.find(function (err, outfits) {
     if (err) {
       next(err);
     } else {
-      let tagList = req.query.tags.split(',');
-      console.log(tagList)
-      if(!tagList || tagList.length === 0) {
+      if(!req.query.tags || req.query.tags.length === 0) {
         res.json(outfits);
         return;
       } else {
+        let tagList = req.query.tags.split(',');
         let results = [];
         tagList.forEach(function(tag) {
           results = results.concat(outfits.filter(o => o.tags.indexOf(tag) >= 0));

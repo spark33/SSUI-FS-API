@@ -31,6 +31,7 @@ exports.getAllOutfits = function(req, res, next) {
 
 exports.createOutfit = function(req, res, next) {
   var outfit = new Outfit(req.body);
+  outfit.tags = req.body.tags.split(',');
   outfit.save(function (err) {
     if (err) {
       next(err);

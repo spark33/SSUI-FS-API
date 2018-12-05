@@ -15,10 +15,13 @@ exports.createFeature = function(req, res, next) {
     } else {
       var feature = new Feature(req.body);
       feature.tags = req.body.tags.split(',');
-      console.log(feature);
       outfit.features.push(feature);
-      outfit.save();
+      outfit.save(function (err) {
+    if (err) {
+      next(err);
+    } else {
       res.redirect(req.headers.origin + '/outfits/' + outfit._id);
+      // res.json(outfit);
     }
   });
 }

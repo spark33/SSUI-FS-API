@@ -12,13 +12,23 @@ exports.getAllOutfits = function(req, res, next) {
     if (err) {
       next(err);
     } else {
-      res.json(outfits);
+      let tagList = req.body.tagList;
+      if(!tagList || tagList.length === 0) {
+        res.json(outfits);
+        return;
+      } else {
+        let results = [];
+        tagList.forEach(function(tag) {
+          results = results.concat(outfits.filter(o => o.tags.indexOf(tag) >= 0));
+        });
+        outfits = [...new Set(results)];
+        res.json(outfits);
+      }
     }
   });
 }
 
 exports.createOutfit = function(req, res, next) {
-  console.log(req);
   var outfit = new Outfit(req.body);
   outfit.save(function (err) {
     if (err) {

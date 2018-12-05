@@ -35,7 +35,8 @@ exports.createOutfit = function(req, res, next) {
     if (err) {
       next(err);
     } else {
-      res.json(outfit);
+      res.redirect(req.headers.origin + '/outfits/' + outfit._id);
+      // res.json(outfit);
     }
   });
 }

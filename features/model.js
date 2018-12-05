@@ -17,11 +17,12 @@ exports.createFeature = function(req, res, next) {
       feature.tags = req.body.tags.split(',');
       outfit.features.push(feature);
       outfit.save(function (err) {
-    if (err) {
-      next(err);
-    } else {
-      res.redirect(req.headers.origin + '/outfits/' + outfit._id);
-      // res.json(outfit);
+        if (err) {
+          next(err);
+        } else {
+          res.redirect(req.headers.origin + '/outfits/' + outfit._id);
+        }
+      });
     }
   });
 }
